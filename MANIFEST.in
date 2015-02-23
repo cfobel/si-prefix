@@ -1,0 +1,4 @@
+include RELEASE-VERSION
+include version.py
+include setup.py
+include paver-minilib.zip

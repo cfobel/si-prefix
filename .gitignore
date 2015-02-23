@@ -1,0 +1,9 @@
+*.so
+*.pyc
+RELEASE-VERSION
+*.egg-info
+*.ropeproject/
+dist/
+paver-minilib.zip
+setup.py
+build/
