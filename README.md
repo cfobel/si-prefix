@@ -1,14 +1,17 @@
-# `cythrust` #
+Functions for formatting numbers according to SI standards.
 
-[Cython][1] bindings for the [Thrust][2] parallel library.
+Example usage:
 
-## Notes ##
+    from si_prefix import si_format
 
-This project was made possible by the addition of [C++ template function
-support][3] into [Cython 0.20][1].  Thanks to the developers of [Cython][1] for
-their amazing work!
+    print si_format(.5)
+    # 500.0m  (default precision is 1)
 
+    print si_format(.01331, precision=2)
+    # 13.31m
 
-[1]: http://cython.org
-[2]: http://thrust.github.io
-[3]: http://docs.cython.org/src/userguide/wrapping_CPlusPlus.html#templates
+    print si_format(1331, precision=2)
+    # 1.33k
+
+    print si_format(1331, precision=0)
+    # 1k
