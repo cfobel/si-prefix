@@ -18,7 +18,7 @@ ext_modules = [Extension(f[:-4].replace('/', '.'), [f],
 ext_modules = cythonize(ext_modules)
 
 
-setup(name='si_prefix',
+setup(name='si-prefix',
       version=version.getVersion(),
       description='Functions for formatting numbers according to SI standards.',
       keywords='si prefix format number precision',
