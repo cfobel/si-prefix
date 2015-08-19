@@ -1,7 +1,6 @@
 # coding: utf-8
 from nose.tools import eq_
-from si_prefix import si_format as c_si_format
-from si_prefix._si_prefix import si_format
+from si_prefix import si_format
 
 
 TEST_CASES = [(1e-27, '1.00e-27'),
@@ -44,9 +43,3 @@ def test_si_format():
     for value, result in TEST_CASES:
         # Test that pure Python format function matches expected output.
         eq_(si_format(value, 2), result)
-        # Test that Cython wrapped C++ format function matches expected output.
-        eq_(c_si_format(value, 2), result)
-        for i in xrange(4):
-            # Test that Cython wrapped C++ function matches pure Python
-            # function for several precisions.
-            eq_(si_format(value, i), c_si_format(value, i))
