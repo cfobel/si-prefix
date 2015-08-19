@@ -12,7 +12,7 @@ setup(name='si-prefix',
       author_email='christian@fobel.net',
       url='https://github.com/cfobel/si-prefix',
       license='GPL',
-      packages=['si_prefix'])
+      packages=['si_prefix', 'si_prefix.tests'])
 
 
 @task
