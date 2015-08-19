@@ -17,3 +17,11 @@ Example usage:
 
     print si_format(1331, precision=0)
     # 1k
+
+
+# Credits #
+
+Ported from [C version][1] written by
+Jukka “Yucca” Korpela <jkorpela@cs.tut.fi>.
+
+[1]: http://www.cs.tut.fi/~jkorpela/c/eng.html
