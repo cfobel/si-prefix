@@ -1,4 +1,5 @@
 # coding: utf-8
+from __future__ import division
 import math
 
 # Print a floating-point number in engineering notation.
@@ -51,13 +52,13 @@ def split(value, precision=1):
     if negative:
       value *= -1
 
-    return value, expof10
+    return value, int(expof10)
 
 
 def prefix(expof10):
     prefix = "yzafpnum kMGTPEZY"
-    prefix_levels = (len(prefix) - 1) / 2
-    si_level = expof10 / 3
+    prefix_levels = int((len(prefix) - 1) / 2)
+    si_level = int(expof10 / 3)
 
     if abs(si_level) > prefix_levels:
         raise ValueError("Exponent out range of available prefixes.")
