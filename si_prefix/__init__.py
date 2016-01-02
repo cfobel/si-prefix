@@ -35,9 +35,9 @@ def split(value, precision=1):
 
     expof10 = int(math.log10(value))
     if expof10 > 0:
-      expof10 = (expof10 / 3) * 3
+      expof10 = (expof10 // 3) * 3
     else:
-      expof10 = (-expof10 + 3) / 3 * (-3)
+      expof10 = (-expof10 + 3) // 3 * (-3)
 
     value *= 10 ** (-expof10)
 
@@ -57,8 +57,8 @@ def split(value, precision=1):
 
 def prefix(expof10):
     prefix = "yzafpnum kMGTPEZY"
-    prefix_levels = int((len(prefix) - 1) / 2)
-    si_level = int(expof10 / 3)
+    prefix_levels = (len(prefix) - 1) // 2
+    si_level = expof10 // 3
 
     if abs(si_level) > prefix_levels:
         raise ValueError("Exponent out range of available prefixes.")
