@@ -1,12 +1,19 @@
 # coding: utf-8
 from __future__ import division
 import math
+import re
 
 # Print a floating-point number in engineering notation.
 # Ported from [C version][1] written by
 # Jukka “Yucca” Korpela <jkorpela@cs.tut.fi>.
 #
 # [1]: http://www.cs.tut.fi/~jkorpela/c/eng.html
+
+SI_PREFIX_UNITS = "yzafpnum kMGTPEZY"
+CRE_SI_NUMBER = re.compile(r'\s*(?P<sign>[\+\-])?'
+                           r'(?P<integer>\d+)'
+                           r'(?P<fraction>.\d+)?\s*'
+                           r'(?P<si_unit>[%s])?\s*' % SI_PREFIX_UNITS)
 
 
 # std::pair<double, int>
@@ -56,13 +63,12 @@ def split(value, precision=1):
 
 
 def prefix(expof10):
-    prefix = "yzafpnum kMGTPEZY"
-    prefix_levels = (len(prefix) - 1) // 2
+    prefix_levels = (len(SI_PREFIX_UNITS) - 1) // 2
     si_level = expof10 // 3
 
     if abs(si_level) > prefix_levels:
         raise ValueError("Exponent out range of available prefixes.")
-    return prefix[si_level + prefix_levels]
+    return SI_PREFIX_UNITS[si_level + prefix_levels]
 
 
 def si_format(value, precision=1):
@@ -116,3 +122,37 @@ def si_format(value, precision=1):
         if expof10 > 0:
             sign = "+"
         return '%se%s%s' % (value_str, sign, expof10)
+
+
+def si_parse(value):
+    '''
+    Parse a value expressed using SI prefix units to a floating point number.
+
+    Args:
+
+        value (str) : Value expressed using SI prefix units (as returned by
+            `si_format` function).
+    '''
+    import re
+
+    SI_PREFIX_UNITS = "yzafpnum kMGTPEZY"
+    CRE_10E_NUMBER = re.compile(r'^\s*(?P<integer>[\+\-]?\d+)?'
+                                r'(?P<fraction>.\d+)?\s*([eE]\s*'
+                                r'(?P<expof10>[\+\-]?\d+))?$')
+    CRE_SI_NUMBER = re.compile(r'^\s*(?P<number>(?P<integer>[\+\-]?\d+)?'
+                               r'(?P<fraction>.\d+)?)\s*'
+                               r'(?P<si_unit>[%s])?\s*$' % SI_PREFIX_UNITS)
+    match = CRE_10E_NUMBER.match(value)
+    if match:
+        # Can be parse using `float`.
+        assert(match.group('integer') is not None or
+               match.group('fraction') is not None)
+        return float(value)
+    match = CRE_SI_NUMBER.match(value)
+    assert(match.group('integer') is not None or
+           match.group('fraction') is not None)
+    d = match.groupdict()
+    si_unit = d['si_unit'] if d['si_unit'] else ' '
+    prefix_levels = (len(SI_PREFIX_UNITS) - 1) // 2
+    scale = 10 ** (3 * (SI_PREFIX_UNITS.index(si_unit) - prefix_levels))
+    return float(d['number']) * scale
