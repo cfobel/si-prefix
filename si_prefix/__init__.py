@@ -16,21 +16,35 @@ CRE_SI_NUMBER = re.compile(r'\s*(?P<sign>[\+\-])?'
                            r'(?P<si_unit>[%s])?\s*' % SI_PREFIX_UNITS)
 
 
-# std::pair<double, int>
 def split(value, precision=1):
-    # Split `value` into value and "exponent-of-10", where "exponent-of-10" is
-    # a multiple of 3.  This corresponds to SI prefixes.
-    #
-    # Returns tuple, where the second value is the "exponent-of-10" and
-    # the first value is `value` divided by the "exponent-of-10".
-    #
-    # For example:
-    #
-    #     si_prefix.split(0.04781)   ->  (47.8, -3)
-    #     si_prefix.split(4781.123)  ->  (4.8, 3)
-    #
-    # See `si_prefix.format` for more examples.
-    #int expof10;
+    '''
+    Split `value` into value and "exponent-of-10", where "exponent-of-10" is a
+    multiple of 3.  This corresponds to SI prefixes.
+
+    Returns tuple, where the second value is the "exponent-of-10" and the first
+    value is `value` divided by the "exponent-of-10".
+
+    Args
+    ----
+
+        value (int, float) : Input value.
+        precision (int) : Number of digits after decimal place to include.
+
+    Returns
+    -------
+
+        (tuple) : The second value is the "exponent-of-10" and the first value
+            is `value` divided by the "exponent-of-10".
+
+    Examples
+    --------
+
+        si_prefix.split(0.04781)   ->  (47.8, -3)
+        si_prefix.split(4781.123)  ->  (4.8, 3)
+
+    See `si_prefix.format` for more examples.
+
+    '''
     negative = False
     digits = precision + 1
 
@@ -63,6 +77,18 @@ def split(value, precision=1):
 
 
 def prefix(expof10):
+    '''
+    Args
+    ----
+
+        expof10 : Exponent of a power of 10 associated with a SI unit
+            character.
+
+    Returns
+    -------
+
+        (str) : One of the characters in "yzafpnum kMGTPEZY".
+    '''
     prefix_levels = (len(SI_PREFIX_UNITS) - 1) // 2
     si_level = expof10 // 3
 
@@ -161,9 +187,6 @@ def si_parse(value):
         value (str) : Value expressed using SI prefix units (as returned by
             `si_format` function).
     '''
-    import re
-
-    SI_PREFIX_UNITS = "yzafpnum kMGTPEZY"
     CRE_10E_NUMBER = re.compile(r'^\s*(?P<integer>[\+\-]?\d+)?'
                                 r'(?P<fraction>.\d+)?\s*([eE]\s*'
                                 r'(?P<expof10>[\+\-]?\d+))?$')
@@ -184,3 +207,35 @@ def si_parse(value):
     prefix_levels = (len(SI_PREFIX_UNITS) - 1) // 2
     scale = 10 ** (3 * (SI_PREFIX_UNITS.index(si_unit) - prefix_levels))
     return float(d['number']) * scale
+
+
+def si_prefix_scale(si_unit):
+    '''
+    Args
+    ----
+
+        si_unit (str) : SI unit character, i.e., one of "yzafpnum kMGTPEZY".
+
+    Returns
+    -------
+
+        (int) : Multiple associated with `si_unit`, e.g., 1000 for `si_unit=k`.
+    '''
+    return 10 ** si_prefix_expof10(si_unit)
+
+
+def si_prefix_expof10(si_unit):
+    '''
+    Args
+    ----
+
+        si_unit (str) : SI unit character, i.e., one of "yzafpnum kMGTPEZY".
+
+    Returns
+    -------
+
+        (int) : Exponent of the power of ten associated with `si_unit`, e.g.,
+            3 for `si_unit=k` and -6 for `si_unit=u`.
+    '''
+    prefix_levels = (len(SI_PREFIX_UNITS) - 1) // 2
+    return (3 * (SI_PREFIX_UNITS.index(si_unit) - prefix_levels))
