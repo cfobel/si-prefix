@@ -7,3 +7,4 @@ dist/
 paver-minilib.zip
 setup.py
 build/
+docs/_build

@@ -1,8 +1,11 @@
-# si_prefix #
+si\_prefix
+==========
 
 Functions for formatting numbers according to SI standards.
 
 Example usage:
+
+::
 
     from si_prefix import si_format
 
@@ -18,12 +21,10 @@ Example usage:
     print si_format(1331, precision=0)
     # 1k
 
+Credits
+=======
 
-# Credits #
+Written by Christian Fobel christian@fobel.net
 
-Written by Christian Fobel <christian@fobel.net>
-
-Ported from [C version][1] written by Jukka “Yucca” Korpela
-<jkorpela@cs.tut.fi>.
-
-[1]: http://www.cs.tut.fi/~jkorpela/c/eng.html
+Ported from `C version <http://www.cs.tut.fi/~jkorpela/c/eng.html>`__
+written by Jukka “Yucca” Korpela jkorpela@cs.tut.fi.
