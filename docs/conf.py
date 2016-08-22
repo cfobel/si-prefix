@@ -21,7 +21,8 @@ import sphinx_rtd_theme
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('..'))
+import version
 
 # -- General configuration ------------------------------------------------
 
@@ -67,7 +68,7 @@ author = u'Christian Fobel'
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = open(r'../RELEASE-VERSION').read().strip()
+release = version.getVersion()
 # The short X.Y version.
 version = u'.'.join(release.split('.')[:2])
 
