@@ -26,24 +26,26 @@ def split(value, precision=1):
 
     Args
     ----
-
-        value (int, float) : Input value.
-        precision (int) : Number of digits after decimal place to include.
+    value : int, float
+        Input value.
+    precision : int
+        Number of digits after decimal place to include.
 
     Returns
     -------
-
-        (tuple) : The second value is the "exponent-of-10" and the first value
-            is `value` divided by the "exponent-of-10".
+    tuple
+        The second value is the "exponent-of-10" and the first value is `value`
+        divided by the "exponent-of-10".
 
     Examples
     --------
+
+    .. code-block:: python
 
         si_prefix.split(0.04781)   ->  (47.8, -3)
         si_prefix.split(4781.123)  ->  (4.8, 3)
 
     See `si_prefix.format` for more examples.
-
     '''
     negative = False
     digits = precision + 1
@@ -78,16 +80,14 @@ def split(value, precision=1):
 
 def prefix(expof10):
     '''
-    Args
-    ----
+    Args:
 
         expof10 : Exponent of a power of 10 associated with a SI unit
             character.
 
-    Returns
-    -------
+    Returns:
 
-        (str) : One of the characters in "yzafpnum kMGTPEZY".
+        str : One of the characters in "yzafpnum kMGTPEZY".
     '''
     prefix_levels = (len(SI_PREFIX_UNITS) - 1) // 2
     si_level = expof10 // 3
@@ -105,26 +105,31 @@ def si_format(value, precision=1, format_str='{value} {prefix}',
     Args
     ----
 
-        value (int, float) : Input value.
-        precision (int) : Number of digits after decimal place to include.
-        format_str (str) : Format string where `{prefix}` and `{value}`
-            represent the SI prefix and the value (scaled according to the
-            prefix), respectively.  The default format matches the format specified
-            [here][1].
-        exp_str : Format string where `{expof10}` and `{value}`
-            represent the exponent of 10 and the value (scaled according to the
-            exponent of 10), respectively.  This format is used if the absolute
-            exponent of 10 value is greater than 24.
+    value : int, float
+        Input value.
+    precision : int
+        Number of digits after decimal place to include.
+    format_str : str
+        Format string where `{prefix}` and `{value}` represent the SI prefix
+        and the value (scaled according to the prefix), respectively.  The
+        default format matches the `SI prefix style`_ format.
+    exp_str : str
+        Format string where `{expof10}` and `{value}` represent the exponent of
+        10 and the value (scaled according to the exponent of 10),
+        respectively.  This format is used if the absolute exponent of 10 value
+        is greater than 24.
 
     Returns
     -------
-
-        (str) : `value` formatted according to the [SI prefix style][1].
+    str
+        `value` formatted according to the `SI prefix style`_.
 
     Examples
     --------
 
     For example, with `precision=2`:
+
+    .. code-block:: python
 
         1e-27 --> 1.00e-27
         1.764e-24 --> 1.76 y
@@ -162,7 +167,9 @@ def si_format(value, precision=1, format_str='{value} {prefix}',
         1.55051e+28 --> 15.51e+27
         6.51216e+29 --> 651.22e+27
 
-    [1]: http://physics.nist.gov/cuu/Units/checklist.html
+
+    .. _SI prefix style:
+        http://physics.nist.gov/cuu/Units/checklist.html
     '''
     svalue, expof10 = split(value, precision)
     value_format = '%%.%df' % precision
@@ -211,31 +218,31 @@ def si_parse(value):
 
 def si_prefix_scale(si_unit):
     '''
-    Args
-    ----
-
-        si_unit (str) : SI unit character, i.e., one of "yzafpnum kMGTPEZY".
+    Parameters
+    ----------
+    si_unit : str
+        SI unit character, i.e., one of "yzafpnum kMGTPEZY".
 
     Returns
     -------
-
-        (int) : Multiple associated with `si_unit`, e.g., 1000 for `si_unit=k`.
+    int
+        Multiple associated with `si_unit`, e.g., 1000 for `si_unit=k`.
     '''
     return 10 ** si_prefix_expof10(si_unit)
 
 
 def si_prefix_expof10(si_unit):
     '''
-    Args
-    ----
-
-        si_unit (str) : SI unit character, i.e., one of "yzafpnum kMGTPEZY".
+    Parameters
+    ----------
+    si_unit : str
+        SI unit character, i.e., one of "yzafpnum kMGTPEZY".
 
     Returns
     -------
-
-        (int) : Exponent of the power of ten associated with `si_unit`, e.g.,
-            3 for `si_unit=k` and -6 for `si_unit=u`.
+    int
+        Exponent of the power of ten associated with `si_unit`, e.g., 3 for
+        `si_unit=k` and -6 for `si_unit=u`.
     '''
     prefix_levels = (len(SI_PREFIX_UNITS) - 1) // 2
     return (3 * (SI_PREFIX_UNITS.index(si_unit) - prefix_levels))
