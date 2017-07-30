@@ -26,4 +26,13 @@ Written by Christian Fobel <christian@fobel.net>
 Ported from [C version][1] written by Jukka “Yucca” Korpela
 <jkorpela@cs.tut.fi>.
 
+## Contributors ##
+
+Python 3 support: [olehermanse][2]
+
+License
+-------
+This project is licensed under the terms of the [BSD 3-clause license](/LICENSE.md)
+
 [1]: http://www.cs.tut.fi/~jkorpela/c/eng.html
+[2]: https://github.com/olehermanse
