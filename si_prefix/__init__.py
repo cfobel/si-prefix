@@ -69,7 +69,7 @@ def split(value, precision=1):
         si_prefix.split(0.04781)   ->  (47.8, -3)
         si_prefix.split(4781.123)  ->  (4.8, 3)
 
-    See `si_prefix.format` for more examples.
+    See :func:`si_format` for more examples.
     '''
     negative = False
     digits = precision + 1
