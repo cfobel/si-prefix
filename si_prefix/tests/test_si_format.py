@@ -3,6 +3,8 @@ from nose.tools import eq_
 from si_prefix import si_format
 
 
+#: .. versionchanged:: X.X.X
+#:     Use unicode strings and use µ to denote micro (not u).
 TEST_CASES = [(1e-27, u'1.00e-27'),
               (1.764e-24, u'1.76 y'),
               (7.4088e-23, u'74.09 y'),
@@ -39,7 +41,16 @@ TEST_CASES = [(1e-27, u'1.00e-27'),
               (6.51216e+29, u'651.22e+27')]
 
 
+#: .. versionchanged:: X.X.X
+#:    Yield each individual test.
 def test_si_format():
     for value, result in TEST_CASES:
         # Test that pure Python format function matches expected output.
-        eq_(si_format(value, 2), result)
+        yield _test_si_format, value, result
+
+
+def _test_si_format(value, result):
+    '''
+    .. versionadded:: X.X.X
+    '''
+    eq_(si_format(value, 2), result)
