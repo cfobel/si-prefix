@@ -1,3 +1,5 @@
 include RELEASE-VERSION
 include version.py
 include setup.py
+include versioneer.py
+include si_prefix/_version.py

@@ -1,0 +1,3 @@
+
+*.ipynb	diff=jupyternotebook
+si_prefix/_version.py export-subst

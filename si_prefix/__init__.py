@@ -3,6 +3,10 @@ from __future__ import division
 import math
 import re
 
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions
+
 # Print a floating-point number in engineering notation.
 # Ported from [C version][1] written by
 # Jukka “Yucca” Korpela <jkorpela@cs.tut.fi>.
