@@ -3,7 +3,7 @@ from nose.tools import eq_
 from si_prefix import si_format
 
 
-#: .. versionchanged:: X.X.X
+#: .. versionchanged:: 1.0
 #:     Use unicode strings and use µ to denote micro (not u).
 TEST_CASES = [(1e-27, u'1.00e-27'),
               (1.764e-24, u'1.76 y'),
@@ -41,7 +41,7 @@ TEST_CASES = [(1e-27, u'1.00e-27'),
               (6.51216e+29, u'651.22e+27')]
 
 
-#: .. versionchanged:: X.X.X
+#: .. versionchanged:: 1.0
 #:    Yield each individual test.
 def test_si_format():
     for value, result in TEST_CASES:
@@ -51,6 +51,6 @@ def test_si_format():
 
 def _test_si_format(value, result):
     '''
-    .. versionadded:: X.X.X
+    .. versionadded:: 1.0
     '''
     eq_(si_format(value, 2), result)

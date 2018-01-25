@@ -9,7 +9,7 @@ import re
 #
 # [1]: http://www.cs.tut.fi/~jkorpela/c/eng.html
 
-#: .. versionchanged:: X.X.X
+#: .. versionchanged:: 1.0
 #:     Define as unicode string and use µ (i.e., ``\N{MICRO SIGN}``, ``\x0b5``)
 #:     to denote micro (not u).
 #:
@@ -26,7 +26,7 @@ import re
 #: .. _`Forum post`: https://mail.python.org/pipermail/python-list/2009-February/525913.html
 #: .. _`The International System of Units (SI) report`: https://www.bipm.org/utils/common/pdf/si_brochure_8_en.pdf
 SI_PREFIX_UNITS = u"yzafpnµm kMGTPEZY"
-#: .. versionchanged:: X.X.X
+#: .. versionchanged:: 1.0
 #:     Use unicode string for SI unit to support micro (i.e., µ) character.
 #:
 #:     .. seealso::
@@ -190,7 +190,7 @@ def si_format(value, precision=1, format_str=u'{value} {prefix}',
         1.55051e+28 --> 15.51e+27
         6.51216e+29 --> 651.22e+27
 
-    .. versionchanged:: X.X.X
+    .. versionchanged:: 1.0
         Use unicode string for :data:`format_str` and SI value format string to
         support micro (i.e., µ) characte, and change return type to unicode
         string.
@@ -228,7 +228,7 @@ def si_parse(value):
         function).
 
 
-    .. versionchanged:: X.X.X
+    .. versionchanged:: 1.0
         Use unicode string for SI unit to support micro (i.e., µ) character.
 
         .. seealso::
