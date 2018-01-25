@@ -10,12 +10,13 @@ Welcome to si-prefix's documentation!
 
 -----------------
 
-Contents:
+API
+---
 
-.. toctree::
-    :maxdepth: 2
-
-        modules <modules.rst>
+.. automodule:: si_prefix
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 Indices and tables
 ==================

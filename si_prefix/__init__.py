@@ -9,11 +9,35 @@ import re
 #
 # [1]: http://www.cs.tut.fi/~jkorpela/c/eng.html
 
-SI_PREFIX_UNITS = "yzafpnum kMGTPEZY"
+#: .. versionchanged:: 1.0
+#:     Define as unicode string and use µ (i.e., ``\N{MICRO SIGN}``, ``\x0b5``)
+#:     to denote micro (not u).
+#:
+#:     .. seealso::
+#:
+#:         `Issue #4`_.
+#:
+#:         `Forum post`_ discussing unicode using µ as an example.
+#:
+#:         `The International System of Units (SI) report`_ from the Bureau
+#:         International des Poids et Mesures
+#:
+#: .. _`Issue #4`: https://github.com/cfobel/si-prefix/issues/4
+#: .. _`Forum post`: https://mail.python.org/pipermail/python-list/2009-February/525913.html
+#: .. _`The International System of Units (SI) report`: https://www.bipm.org/utils/common/pdf/si_brochure_8_en.pdf
+SI_PREFIX_UNITS = u"yzafpnµm kMGTPEZY"
+#: .. versionchanged:: 1.0
+#:     Use unicode string for SI unit to support micro (i.e., µ) character.
+#:
+#:     .. seealso::
+#:
+#:         `Issue #4`_.
+#:
+#: .. _`Issue #4`: https://github.com/cfobel/si-prefix/issues/4
 CRE_SI_NUMBER = re.compile(r'\s*(?P<sign>[\+\-])?'
                            r'(?P<integer>\d+)'
                            r'(?P<fraction>.\d+)?\s*'
-                           r'(?P<si_unit>[%s])?\s*' % SI_PREFIX_UNITS)
+                           u'(?P<si_unit>[%s])?\s*' % SI_PREFIX_UNITS)
 
 
 def split(value, precision=1):
@@ -45,35 +69,35 @@ def split(value, precision=1):
         si_prefix.split(0.04781)   ->  (47.8, -3)
         si_prefix.split(4781.123)  ->  (4.8, 3)
 
-    See `si_prefix.format` for more examples.
+    See :func:`si_format` for more examples.
     '''
     negative = False
     digits = precision + 1
 
     if value < 0.:
-      value = -value
-      negative = True
+        value = -value
+        negative = True
     elif value == 0.:
-      return 0., 0
+        return 0., 0
 
     expof10 = int(math.log10(value))
     if expof10 > 0:
-      expof10 = (expof10 // 3) * 3
+        expof10 = (expof10 // 3) * 3
     else:
-      expof10 = (-expof10 + 3) // 3 * (-3)
+        expof10 = (-expof10 + 3) // 3 * (-3)
 
     value *= 10 ** (-expof10)
 
     if value >= 1000.:
-      value /= 1000.0
-      expof10 += 3
+        value /= 1000.0
+        expof10 += 3
     elif value >= 100.0:
-      digits -= 2
+        digits -= 2
     elif value >= 10.0:
-      digits -= 1
+        digits -= 1
 
     if negative:
-      value *= -1
+        value *= -1
 
     return value, int(expof10)
 
@@ -97,32 +121,31 @@ def prefix(expof10):
     return SI_PREFIX_UNITS[si_level + prefix_levels]
 
 
-def si_format(value, precision=1, format_str='{value} {prefix}',
-              exp_format_str='{value}e{expof10}'):
+def si_format(value, precision=1, format_str=u'{value} {prefix}',
+              exp_format_str=u'{value}e{expof10}'):
     '''
     Format value to string with SI prefix, using the specified precision.
 
-    Args
-    ----
-
+    Parameters
+    ----------
     value : int, float
         Input value.
     precision : int
         Number of digits after decimal place to include.
-    format_str : str
-        Format string where `{prefix}` and `{value}` represent the SI prefix
-        and the value (scaled according to the prefix), respectively.  The
-        default format matches the `SI prefix style`_ format.
-    exp_str : str
-        Format string where `{expof10}` and `{value}` represent the exponent of
-        10 and the value (scaled according to the exponent of 10),
+    format_str : str or unicode
+        Format string where ``{prefix}`` and ``{value}`` represent the SI
+        prefix and the value (scaled according to the prefix), respectively.
+        The default format matches the `SI prefix style`_ format.
+    exp_str : str or unicode
+        Format string where ``{expof10}`` and ``{value}`` represent the
+        exponent of 10 and the value (scaled according to the exponent of 10),
         respectively.  This format is used if the absolute exponent of 10 value
         is greater than 24.
 
     Returns
     -------
-    str
-        `value` formatted according to the `SI prefix style`_.
+    unicode
+        :data:`value` formatted according to the `SI prefix style`_.
 
     Examples
     --------
@@ -167,12 +190,21 @@ def si_format(value, precision=1, format_str='{value} {prefix}',
         1.55051e+28 --> 15.51e+27
         6.51216e+29 --> 651.22e+27
 
+    .. versionchanged:: 1.0
+        Use unicode string for :data:`format_str` and SI value format string to
+        support micro (i.e., µ) characte, and change return type to unicode
+        string.
 
+        .. seealso::
+
+            `Issue #4`_.
+
+    .. _`Issue #4`: https://github.com/cfobel/si-prefix/issues/4
     .. _SI prefix style:
         http://physics.nist.gov/cuu/Units/checklist.html
     '''
     svalue, expof10 = split(value, precision)
-    value_format = '%%.%df' % precision
+    value_format = u'%%.%df' % precision
     value_str = value_format % svalue
     try:
         return format_str.format(value=value_str,
@@ -189,17 +221,28 @@ def si_parse(value):
     '''
     Parse a value expressed using SI prefix units to a floating point number.
 
-    Args:
+    Parameters
+    ----------
+    value : str or unicode
+        Value expressed using SI prefix units (as returned by :func:`si_format`
+        function).
 
-        value (str) : Value expressed using SI prefix units (as returned by
-            `si_format` function).
+
+    .. versionchanged:: 1.0
+        Use unicode string for SI unit to support micro (i.e., µ) character.
+
+        .. seealso::
+
+            `Issue #4`_.
+
+    .. _`Issue #4`: https://github.com/cfobel/si-prefix/issues/4
     '''
     CRE_10E_NUMBER = re.compile(r'^\s*(?P<integer>[\+\-]?\d+)?'
                                 r'(?P<fraction>.\d+)?\s*([eE]\s*'
                                 r'(?P<expof10>[\+\-]?\d+))?$')
     CRE_SI_NUMBER = re.compile(r'^\s*(?P<number>(?P<integer>[\+\-]?\d+)?'
                                r'(?P<fraction>.\d+)?)\s*'
-                               r'(?P<si_unit>[%s])?\s*$' % SI_PREFIX_UNITS)
+                               u'(?P<si_unit>[%s])?\s*$' % SI_PREFIX_UNITS)
     match = CRE_10E_NUMBER.match(value)
     if match:
         # Can be parse using `float`.
@@ -221,7 +264,7 @@ def si_prefix_scale(si_unit):
     Parameters
     ----------
     si_unit : str
-        SI unit character, i.e., one of "yzafpnum kMGTPEZY".
+        SI unit character, i.e., one of "yzafpnµm kMGTPEZY".
 
     Returns
     -------
@@ -236,13 +279,13 @@ def si_prefix_expof10(si_unit):
     Parameters
     ----------
     si_unit : str
-        SI unit character, i.e., one of "yzafpnum kMGTPEZY".
+        SI unit character, i.e., one of "yzafpnµm kMGTPEZY".
 
     Returns
     -------
     int
         Exponent of the power of ten associated with `si_unit`, e.g., 3 for
-        `si_unit=k` and -6 for `si_unit=u`.
+        `si_unit=k` and -6 for `si_unit=µ`.
     '''
     prefix_levels = (len(SI_PREFIX_UNITS) - 1) // 2
     return (3 * (SI_PREFIX_UNITS.index(si_unit) - prefix_levels))
