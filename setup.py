@@ -1,8 +1,13 @@
-from paver.easy import task, needs
-from paver.setuputils import setup, install_distutils_tasks, find_package_data
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import print_function
 
+from setuptools import setup
+import sys
+
+sys.path.insert(0, '.')
 import version
-
 
 setup(name='si-prefix',
       version=version.getVersion(),
@@ -11,12 +16,5 @@ setup(name='si-prefix',
       author='Christian Fobel',
       author_email='christian@fobel.net',
       url='https://github.com/cfobel/si-prefix',
-      license='GPL',
+      license='BSD-3',
       packages=['si_prefix', 'si_prefix.tests'])
-
-
-@task
-@needs('generate_setup', 'minilib', 'setuptools.command.sdist')
-def sdist():
-    """Overrides sdist to make sure that our setup.py is generated."""
-    pass
