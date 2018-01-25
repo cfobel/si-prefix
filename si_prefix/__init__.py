@@ -75,29 +75,29 @@ def split(value, precision=1):
     digits = precision + 1
 
     if value < 0.:
-      value = -value
-      negative = True
+        value = -value
+        negative = True
     elif value == 0.:
-      return 0., 0
+        return 0., 0
 
     expof10 = int(math.log10(value))
     if expof10 > 0:
-      expof10 = (expof10 // 3) * 3
+        expof10 = (expof10 // 3) * 3
     else:
-      expof10 = (-expof10 + 3) // 3 * (-3)
+        expof10 = (-expof10 + 3) // 3 * (-3)
 
     value *= 10 ** (-expof10)
 
     if value >= 1000.:
-      value /= 1000.0
-      expof10 += 3
+        value /= 1000.0
+        expof10 += 3
     elif value >= 100.0:
-      digits -= 2
+        digits -= 2
     elif value >= 10.0:
-      digits -= 1
+        digits -= 1
 
     if negative:
-      value *= -1
+        value *= -1
 
     return value, int(expof10)
 
