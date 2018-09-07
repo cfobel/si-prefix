@@ -5,10 +5,11 @@ from __future__ import print_function
 
 from setuptools import setup
 
-import si_prefix
+import versioneer
 
 setup(name='si-prefix',
-      version=si_prefix.__version__,
+      version=versioneer.get_version(),
+      cmdclass=versioneer.get_cmdclass(),
       description='Functions for formatting numbers according to SI standards.',
       keywords='si prefix format number precision',
       author='Christian Fobel',
