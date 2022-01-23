@@ -124,7 +124,7 @@ def prefix(expof10):
 
 
 def si_format(value, precision=1, format_str=u'{value} {prefix}',
-              exp_format_str=u'{value}e{expof10}'):
+              exp_format_str=u'{value}e{expof10}', trailing_zeroes=False):
     """
     Format value to string with SI prefix, using the specified precision.
 
@@ -143,6 +143,8 @@ def si_format(value, precision=1, format_str=u'{value} {prefix}',
         exponent of 10 and the value (scaled according to the exponent of 10),
         respectively.  This format is used if the absolute exponent of 10 value
         is greater than 24.
+    trailing_zeroes : bool
+        Include trailing zeroes if number of decimals in value is less than ``{precision}``
 
     Returns
     -------
@@ -206,17 +208,20 @@ def si_format(value, precision=1, format_str=u'{value} {prefix}',
         httpS://physics.nist.gov/cuu/Units/checklist.html
     """
     svalue, expof10 = split(value, precision)
-    value_format = u'%%.%df' % precision
-    value_str = value_format % svalue
+    if trailing_zeroes:
+        value_str = f"{svalue:.{precision}f}"
+    else:
+        # rounds to precision without trailing zeroes which drives me insane
+        value_str = f"{round(svalue, precision):g}"
     try:
         return format_str.format(value=value_str,
-                                 prefix=prefix(expof10).strip())
+                                 prefix=prefix(expof10).strip()).strip()
     except ValueError:
         sign = ''
         if expof10 > 0:
             sign = "+"
         return exp_format_str.format(value=value_str,
-                                     expof10=''.join([sign, str(expof10)]))
+                                     expof10=''.join([sign, str(expof10)])).strip()
 
 
 def si_parse(value):
