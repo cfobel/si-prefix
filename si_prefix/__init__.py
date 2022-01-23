@@ -32,7 +32,6 @@ del get_versions
 #: .. _`The International System of Units (SI) report`: https://www.bipm.org/utils/common/pdf/si_brochure_8_en.pdf
 SI_PREFIX_UNITS = u"yzafpnµm kMGTPEZY"
 
-
 #: .. versionchanged:: 1.0
 #:     Use unicode string for SI unit to support micro (i.e., µ) character.
 #:
@@ -41,6 +40,9 @@ SI_PREFIX_UNITS = u"yzafpnµm kMGTPEZY"
 #:         `Issue #4`_.
 #:
 #: .. _`Issue #4`: https://github.com/cfobel/si-prefix/issues/4
+CRE_SI_NUMBER = re.compile(r'^\s*(?P<number>(?P<integer>[+\-]?\d+)?'
+                           r'(?P<fraction>.\d+)?)\s*'
+                           r'(?P<si_unit>[' + SI_PREFIX_UNITS + r'])?\s*$')
 
 
 def split(value, precision=1):
@@ -145,7 +147,7 @@ def si_format(value, precision=1, format_str=u'{value} {prefix}',
         respectively.  This format is used if the absolute exponent of 10 value
         is greater than 24.
     trailing_zeroes : bool
-        Include trailing zeroes if number of decimals in value is less than ``{precision}``
+        Include trailing zeroes if number of decimals in value is less than the precision
 
     Returns
     -------
@@ -206,7 +208,7 @@ def si_format(value, precision=1, format_str=u'{value} {prefix}',
 
     .. _`Issue #4`: https://github.com/cfobel/si-prefix/issues/4
     .. _SI prefix style:
-        httpS://physics.nist.gov/cuu/Units/checklist.html
+        https://physics.nist.gov/cuu/Units/checklist.html
     """
     svalue, expof10 = split(value, precision)
     if trailing_zeroes:
@@ -248,9 +250,7 @@ def si_parse(value):
     CRE_10E_NUMBER = re.compile(r'^\s*(?P<integer>[+\-]?\d+)?'
                                 r'(?P<fraction>.\d+)?\s*([eE]\s*'
                                 r'(?P<expof10>[+\-]?\d+))?$')
-    CRE_SI_NUMBER = re.compile(r'^\s*(?P<number>(?P<integer>[+\-]?\d+)?'
-                               r'(?P<fraction>.\d+)?)\s*'
-                               r'(?P<si_unit>[' + SI_PREFIX_UNITS + r'])?\s*$')
+
     match = CRE_10E_NUMBER.match(value)
     if match:
         # Can be parse using `float`.
