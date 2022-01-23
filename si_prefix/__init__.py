@@ -1,6 +1,7 @@
 # coding: utf-8
 import math
 import re
+from __future__ import division
 
 from ._version import get_versions
 
@@ -249,7 +250,7 @@ def si_parse(value):
                                 r'(?P<expof10>[+\-]?\d+))?$')
     CRE_SI_NUMBER = re.compile(r'^\s*(?P<number>(?P<integer>[+\-]?\d+)?'
                                r'(?P<fraction>.\d+)?)\s*'
-                               u'(?P<si_unit>[' + SI_PREFIX_UNITS + r'])?\s*$')
+                               r'(?P<si_unit>[' + SI_PREFIX_UNITS + r'])?\s*$')
     match = CRE_10E_NUMBER.match(value)
     if match:
         # Can be parse using `float`.
