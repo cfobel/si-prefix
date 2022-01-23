@@ -1,7 +1,8 @@
 # coding: utf-8
+from __future__ import division
+
 import math
 import re
-from __future__ import division
 
 from ._version import get_versions
 
