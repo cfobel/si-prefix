@@ -18,37 +18,42 @@ except ImportError:  # pragma: no cover
 #
 # [1]: http://www.cs.tut.fi/~jkorpela/c/eng.html
 
-#: .. versionchanged:: 1.0
-#:     Define as unicode string and use µ (i.e., ``\N{MICRO SIGN}``, ``\x0b5``)
-#:     to denote micro (not u).
-#:
-#:     .. seealso::
-#:
-#:         `Issue #4`_.
-#:
-#:         `Forum post`_ discussing unicode using µ as an example.
-#:
-#:         `The International System of Units (SI) report`_ from the Bureau
-#:         International des Poids et Mesures
-#:
-#: .. _`Issue #4`: https://github.com/cfobel/si-prefix/issues/4
-#: .. _`Forum post`: https://mail.python.org/pipermail/python-list/2009-February/525913.html
-#: .. _`The International System of Units (SI) report`: https://www.bipm.org/utils/common/pdf/si_brochure_8_en.pdf
 SI_PREFIX_UNITS = "yzafpnµm kMGTPEZY"
-#: .. versionchanged:: 1.0
-#:     Use unicode string for SI unit to support micro (i.e., µ) character.
-#:
-#:     .. seealso::
-#:
-#:         `Issue #4`_.
-#:
-#: .. _`Issue #4`: https://github.com/cfobel/si-prefix/issues/4
+r"""
+.. versionchanged:: 1.0
+    Define as unicode string and use µ (i.e., ``\N{MICRO SIGN}``, ``\x0b5``)
+    to denote micro (not u).
+
+.. seealso::
+
+    `Issue #4`_.
+
+    `Forum post`_ discussing unicode using µ as an example.
+
+    `The International System of Units (SI) report`_ from the Bureau
+    International des Poids et Mesures
+
+.. _`Issue #4`: https://github.com/cfobel/si-prefix/issues/4
+.. _`Forum post`: https://mail.python.org/pipermail/python-list/2009-February/525913.html
+.. _`The International System of Units (SI) report`: https://www.bipm.org/utils/common/pdf/si_brochure_8_en.pdf
+"""  # noqa: E501
+
 CRE_SI_NUMBER = re.compile(
     r"\s*(?P<sign>[\+\-])?"
     r"(?P<integer>\d+)"
     r"(?P<fraction>.\d+)?\s*"
-    "(?P<si_unit>[%s])?\s*" % SI_PREFIX_UNITS
+    r"(?P<si_unit>[%s])?\s*" % SI_PREFIX_UNITS
 )
+"""
+.. versionchanged:: 1.0
+    Use unicode string for SI unit to support micro (i.e., µ) character.
+
+.. seealso::
+
+    `Issue #4`_.
+
+.. _`Issue #4`: https://github.com/cfobel/si-prefix/issues/4
+"""  # noqa: E501
 
 
 def split(value, precision=1):
@@ -260,7 +265,7 @@ def si_parse(value):
     CRE_SI_NUMBER = re.compile(
         r"^\s*(?P<number>(?P<integer>[\+\-]?\d+)?"
         r"(?P<fraction>.\d+)?)\s*"
-        "(?P<si_unit>[%s])?\s*$" % SI_PREFIX_UNITS
+        r"(?P<si_unit>[%s])?\s*$" % SI_PREFIX_UNITS
     )
     match = CRE_10E_NUMBER.match(value)
     if match:
