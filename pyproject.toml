@@ -31,3 +31,10 @@ packages = ["si_prefix", "si_prefix.tests"]
 
 [tool.pytest.ini_options]
 addopts = "--maxfail=2 --disable-warnings"
+
+[tool.isort]
+profile = "black"
+
+[tool.flake8]
+max-line-length = 88
+exclude = ["docs"]
