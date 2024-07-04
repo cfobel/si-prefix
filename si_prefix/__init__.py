@@ -1,11 +1,15 @@
-# coding: utf-8
 from __future__ import division
 import math
 import re
 
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
+try:
+    from ._version import version as __version__
+except ImportError:
+    try:
+        from setuptools_scm import get_version
+        __version__ = get_version(root='..', relative_to=__file__)
+    except ImportError:
+        __version__ = "unknown"
 
 # Print a floating-point number in engineering notation.
 # Ported from [C version][1] written by

@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools", "wheel", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "si-prefix"
+description = "Functions for formatting numbers according to SI standards."
+keywords = ["si", "prefix", "format", "number", "precision"]
+authors = [
+    {name = "Christian Fobel", email = "christian@fobel.net"}
+]
+urls = {homepage = "https://github.com/cfobel/si-prefix"}
+license = {text = "BSD-3"}
+dependencies = []
+dynamic = ["version"]
+
+[project.optional-dependencies]
+testing = ["pytest", "pytest-cov"]
+
+[project.scripts]
+si-prefix = "si_prefix:main"
+
+[tool.setuptools_scm]
+write_to = "si_prefix/_version.py"
+
+[tool.setuptools]
+packages = ["si_prefix", "si_prefix.tests"]
+
+[tool.setuptools.package-data]
+"*" = ["*.txt", "*.rst"]
+
+[tool.pytest.ini_options]
+addopts = "--maxfail=2 --disable-warnings"
