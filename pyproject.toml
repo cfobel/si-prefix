@@ -16,7 +16,7 @@ dependencies = []
 dynamic = ["version"]
 
 [project.optional-dependencies]
-testing = ["pytest", "pytest-cov"]
+testing = ["pytest", "pytest-cov", "black", "flake8", "flake8-pyproject", "isort"]
 
 [project.scripts]
 si-prefix = "si_prefix:main"
