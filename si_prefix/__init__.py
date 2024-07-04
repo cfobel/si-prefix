@@ -34,7 +34,7 @@ except ImportError:  # pragma: no cover
 #: .. _`Issue #4`: https://github.com/cfobel/si-prefix/issues/4
 #: .. _`Forum post`: https://mail.python.org/pipermail/python-list/2009-February/525913.html
 #: .. _`The International System of Units (SI) report`: https://www.bipm.org/utils/common/pdf/si_brochure_8_en.pdf
-SI_PREFIX_UNITS = u"yzafpnµm kMGTPEZY"
+SI_PREFIX_UNITS = "yzafpnµm kMGTPEZY"
 #: .. versionchanged:: 1.0
 #:     Use unicode string for SI unit to support micro (i.e., µ) character.
 #:
@@ -43,14 +43,16 @@ SI_PREFIX_UNITS = u"yzafpnµm kMGTPEZY"
 #:         `Issue #4`_.
 #:
 #: .. _`Issue #4`: https://github.com/cfobel/si-prefix/issues/4
-CRE_SI_NUMBER = re.compile(r'\s*(?P<sign>[\+\-])?'
-                           r'(?P<integer>\d+)'
-                           r'(?P<fraction>.\d+)?\s*'
-                           u'(?P<si_unit>[%s])?\s*' % SI_PREFIX_UNITS)
+CRE_SI_NUMBER = re.compile(
+    r"\s*(?P<sign>[\+\-])?"
+    r"(?P<integer>\d+)"
+    r"(?P<fraction>.\d+)?\s*"
+    "(?P<si_unit>[%s])?\s*" % SI_PREFIX_UNITS
+)
 
 
 def split(value, precision=1):
-    '''
+    """
     Split `value` into value and "exponent-of-10", where "exponent-of-10" is a
     multiple of 3.  This corresponds to SI prefixes.
 
@@ -79,15 +81,15 @@ def split(value, precision=1):
         si_prefix.split(4781.123)  ->  (4.8, 3)
 
     See :func:`si_format` for more examples.
-    '''
+    """
     negative = False
     digits = precision + 1
 
-    if value < 0.:
+    if value < 0.0:
         value = -value
         negative = True
-    elif value == 0.:
-        return 0., 0
+    elif value == 0.0:
+        return 0.0, 0
 
     expof10 = int(math.log10(value))
     if expof10 > 0:
@@ -97,7 +99,7 @@ def split(value, precision=1):
 
     value *= 10 ** (-expof10)
 
-    if value >= 1000.:
+    if value >= 1000.0:
         value /= 1000.0
         expof10 += 3
     elif value >= 100.0:
@@ -112,7 +114,7 @@ def split(value, precision=1):
 
 
 def prefix(expof10):
-    '''
+    """
     Args:
 
         expof10 : Exponent of a power of 10 associated with a SI unit
@@ -121,7 +123,7 @@ def prefix(expof10):
     Returns:
 
         str : One of the characters in "yzafpnum kMGTPEZY".
-    '''
+    """
     prefix_levels = (len(SI_PREFIX_UNITS) - 1) // 2
     si_level = expof10 // 3
 
@@ -130,9 +132,13 @@ def prefix(expof10):
     return SI_PREFIX_UNITS[si_level + prefix_levels]
 
 
-def si_format(value, precision=1, format_str=u'{value} {prefix}',
-              exp_format_str=u'{value}e{expof10}'):
-    '''
+def si_format(
+    value,
+    precision=1,
+    format_str="{value} {prefix}",
+    exp_format_str="{value}e{expof10}",
+):
+    """
     Format value to string with SI prefix, using the specified precision.
 
     Parameters
@@ -211,23 +217,23 @@ def si_format(value, precision=1, format_str=u'{value} {prefix}',
     .. _`Issue #4`: https://github.com/cfobel/si-prefix/issues/4
     .. _SI prefix style:
         http://physics.nist.gov/cuu/Units/checklist.html
-    '''
+    """
     svalue, expof10 = split(value, precision)
-    value_format = u'%%.%df' % precision
+    value_format = "%%.%df" % precision
     value_str = value_format % svalue
     try:
-        return format_str.format(value=value_str,
-                                 prefix=prefix(expof10).strip())
+        return format_str.format(value=value_str, prefix=prefix(expof10).strip())
     except ValueError:
-        sign = ''
+        sign = ""
         if expof10 > 0:
             sign = "+"
-        return exp_format_str.format(value=value_str,
-                                     expof10=''.join([sign, str(expof10)]))
+        return exp_format_str.format(
+            value=value_str, expof10="".join([sign, str(expof10)])
+        )
 
 
 def si_parse(value):
-    '''
+    """
     Parse a value expressed using SI prefix units to a floating point number.
 
     Parameters
@@ -245,31 +251,33 @@ def si_parse(value):
             `Issue #4`_.
 
     .. _`Issue #4`: https://github.com/cfobel/si-prefix/issues/4
-    '''
-    CRE_10E_NUMBER = re.compile(r'^\s*(?P<integer>[\+\-]?\d+)?'
-                                r'(?P<fraction>.\d+)?\s*([eE]\s*'
-                                r'(?P<expof10>[\+\-]?\d+))?$')
-    CRE_SI_NUMBER = re.compile(r'^\s*(?P<number>(?P<integer>[\+\-]?\d+)?'
-                               r'(?P<fraction>.\d+)?)\s*'
-                               u'(?P<si_unit>[%s])?\s*$' % SI_PREFIX_UNITS)
+    """
+    CRE_10E_NUMBER = re.compile(
+        r"^\s*(?P<integer>[\+\-]?\d+)?"
+        r"(?P<fraction>.\d+)?\s*([eE]\s*"
+        r"(?P<expof10>[\+\-]?\d+))?$"
+    )
+    CRE_SI_NUMBER = re.compile(
+        r"^\s*(?P<number>(?P<integer>[\+\-]?\d+)?"
+        r"(?P<fraction>.\d+)?)\s*"
+        "(?P<si_unit>[%s])?\s*$" % SI_PREFIX_UNITS
+    )
     match = CRE_10E_NUMBER.match(value)
     if match:
         # Can be parse using `float`.
-        assert(match.group('integer') is not None or
-               match.group('fraction') is not None)
+        assert match.group("integer") is not None or match.group("fraction") is not None
         return float(value)
     match = CRE_SI_NUMBER.match(value)
-    assert(match.group('integer') is not None or
-           match.group('fraction') is not None)
+    assert match.group("integer") is not None or match.group("fraction") is not None
     d = match.groupdict()
-    si_unit = d['si_unit'] if d['si_unit'] else ' '
+    si_unit = d["si_unit"] if d["si_unit"] else " "
     prefix_levels = (len(SI_PREFIX_UNITS) - 1) // 2
     scale = 10 ** (3 * (SI_PREFIX_UNITS.index(si_unit) - prefix_levels))
-    return float(d['number']) * scale
+    return float(d["number"]) * scale
 
 
 def si_prefix_scale(si_unit):
-    '''
+    """
     Parameters
     ----------
     si_unit : str
@@ -279,12 +287,12 @@ def si_prefix_scale(si_unit):
     -------
     int
         Multiple associated with `si_unit`, e.g., 1000 for `si_unit=k`.
-    '''
+    """
     return 10 ** si_prefix_expof10(si_unit)
 
 
 def si_prefix_expof10(si_unit):
-    '''
+    """
     Parameters
     ----------
     si_unit : str
@@ -295,6 +303,6 @@ def si_prefix_expof10(si_unit):
     int
         Exponent of the power of ten associated with `si_unit`, e.g., 3 for
         `si_unit=k` and -6 for `si_unit=µ`.
-    '''
+    """
     prefix_levels = (len(SI_PREFIX_UNITS) - 1) // 2
-    return (3 * (SI_PREFIX_UNITS.index(si_unit) - prefix_levels))
+    return 3 * (SI_PREFIX_UNITS.index(si_unit) - prefix_levels)
