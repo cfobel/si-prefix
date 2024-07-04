@@ -4,12 +4,13 @@ import re
 
 try:
     from ._version import version as __version__
-except ImportError:
-    try:
-        from setuptools_scm import get_version
-        __version__ = get_version(root='..', relative_to=__file__)
-    except ImportError:
-        __version__ = "unknown"
+except ImportError:  # pragma: no cover
+    try:  # pragma: no cover
+        from setuptools_scm import get_version  # pragma: no cover
+
+        __version__ = get_version(root="..", relative_to=__file__)  # pragma: no cover
+    except ImportError:  # pragma: no cover
+        __version__ = "unknown"  # pragma: no cover
 
 # Print a floating-point number in engineering notation.
 # Ported from [C version][1] written by
