@@ -79,11 +79,9 @@ jobs:
           python -m build
 
       - name: Publish to TestPyPI
-        if: github.ref == 'refs/heads/main'
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
 
       - name: Publish to PyPI
-        if: github.ref == 'refs/heads/main'
         uses: pypa/gh-action-pypi-publish@release/v1
