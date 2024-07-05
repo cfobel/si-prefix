@@ -11,6 +11,7 @@ authors = [
 ]
 urls = {homepage = "https://github.com/cfobel/si-prefix"}
 license = {text = "BSD-3"}
+readme = "README.md"
 dependencies = []
 dynamic = ["version"]
 
