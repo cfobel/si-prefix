@@ -3,7 +3,7 @@ import math
 import re
 
 try:
-    from ._version import version as __version__
+    from ._version import __version__
 except ImportError:  # pragma: no cover
     try:  # pragma: no cover
         from setuptools_scm import get_version  # pragma: no cover

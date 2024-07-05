@@ -18,9 +18,6 @@ dynamic = ["version"]
 [project.optional-dependencies]
 testing = ["pytest", "pytest-cov", "black", "flake8", "flake8-pyproject", "isort"]
 
-[project.scripts]
-si-prefix = "si_prefix:main"
-
 [tool.setuptools_scm]
 write_to = "si_prefix/_version.py"
 
