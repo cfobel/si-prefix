@@ -19,7 +19,7 @@ dynamic = ["version"]
 testing = ["pytest", "pytest-cov", "black", "flake8", "flake8-pyproject", "isort"]
 
 [tool.setuptools_scm]
-write_to = "si_prefix/_version.py"
+version_file = "si_prefix/_version.py"
 
 [tool.setuptools]
 packages = ["si_prefix"]
