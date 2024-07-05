@@ -1,5 +1,7 @@
 # si_prefix #
 
+[![codecov](https://codecov.io/github/cfobel/si-prefix/graph/badge.svg?token=HhZzqDEB92)](https://codecov.io/github/cfobel/si-prefix)
+
 Functions for formatting numbers according to SI standards.
 
 Example usage:
