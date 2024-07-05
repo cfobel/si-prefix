@@ -4,7 +4,8 @@ on:
   push:
     branches: [master]
   pull_request:
-    branches: [master]
+  release:
+    types: [published]
 
 jobs:
   test:
@@ -57,6 +58,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write # IMPORTANT: must include mandatory for trusted PyPI publishing
+    # Only publish on release events
+    if: github.event_name == 'release' && github.event.action == 'published'
+
     steps:
       - uses: actions/checkout@v3
 
@@ -75,7 +79,10 @@ jobs:
           python -m build
 
       - name: Publish to TestPyPI
+        if: github.ref == 'refs/heads/main'
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
 
       - name: Publish to PyPI
         if: github.ref == 'refs/heads/main'
