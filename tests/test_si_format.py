@@ -128,6 +128,27 @@ def test_si_format(value, result):
     assert si_format(value, 2) == result
 
 
+SI_FORMAT_ROLLOVER_TEST_CASES = [
+    # (value, precision, result) -- rounding must carry into the next
+    # prefix instead of leaving an out-of-range mantissa like "1000.0 k".
+    (999999, 1, "1.0 M"),
+    (999999, 0, "1 M"),
+    (999.9, 0, "1 k"),
+    (999500, 0, "1 M"),
+    (999999999, 1, "1.0 G"),
+    (-999999, 1, "-1.0 M"),
+    # Below the rounding boundary the prefix is unchanged.
+    (999500, 1, "999.5 k"),
+    (999999, 4, "999.9990 k"),
+]
+
+
+@pytest.mark.parametrize("value, precision, result",
+                         SI_FORMAT_ROLLOVER_TEST_CASES)
+def test_si_format_rounding_rollover(value, precision, result):
+    assert si_format(value, precision) == result
+
+
 @pytest.mark.parametrize("value, result", SI_PARSE_TEST_CASES)
 def test_si_parse(value, result):
     assert si_parse(value) == pytest.approx(result, rel=1e-2)

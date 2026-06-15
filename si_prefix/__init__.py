@@ -104,7 +104,10 @@ def split(value, precision=1):
 
     value *= 10 ** (-expof10)
 
-    if value >= 1000.0:
+    # A mantissa just under 1000 can round up to 1000 at the requested
+    # precision (e.g. 999.999 formatted as "1000.0"); promote it to the
+    # next prefix so the formatted value stays below 1000.
+    if round(value, precision) >= 1000.0:
         value /= 1000.0
         expof10 += 3
     elif value >= 100.0:
